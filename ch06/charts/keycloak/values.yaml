@@ -1,0 +1,35 @@
+instances: 1
+
+internalService:
+  port: 443
+
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  className: nginx
+  host: keycloak.upandrunning.local
+  tls:
+    secret:
+      name: keycloak-tls-secret
+      cert: files/certificate.pem
+      key: files/key.pem
+
+realm:
+  create: true
+
+postgresql:
+  name: postgresql-db
+  databaseName: keycloak
+  image:
+    repository: postgres
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  secret:
+    name: postgresql-db-secret
+    username: postgres
+    password: superSecretPassword1
+  service:
+    type: ClusterIP
+    port: 5432
+  storage:
+    size: 5Gi
