@@ -39,8 +39,8 @@ spec:
           initialDelaySeconds: 15
           periodSeconds: 10
         readinessProbe:
-          exec:
-            command: [ "sh", "-c", "/opt/rh/rh-mysql56/root/usr/bin/mysql", "--user=$MYSQL_USER", "--password=$MYSQL_PASSWORD", "--host=$(hostname)", "-e", 'SELECT 1;' ]
+          tcpSocket:
+            port: 3306
           initialDelaySeconds: 15
           periodSeconds: 10
       volumes:
