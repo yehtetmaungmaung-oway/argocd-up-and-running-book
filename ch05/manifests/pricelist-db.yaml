@@ -39,7 +39,8 @@ spec:
           initialDelaySeconds: 15
           periodSeconds: 10
         readinessProbe:
-          command: [ "sh", "-c", "mysql", "--user=$MYSQL_USER", "--password=$MYSQL_PASSWORD", "--host=$(hostname)", "-e", 'SELECT 1;' ]
+          exec:
+            command: [ "sh", "-c", "mysql", "--user=$MYSQL_USER", "--password=$MYSQL_PASSWORD", "--host=$(hostname)", "-e", 'SELECT 1;' ]
           initialDelaySeconds: 15
           periodSeconds: 10
       volumes:
