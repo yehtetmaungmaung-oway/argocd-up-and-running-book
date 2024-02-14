@@ -38,10 +38,10 @@ spec:
           httpGet:
             path: /
             port: 8080
-          initialDelaySeconds: 15
-          periodSeconds: 10
+          initialDelaySeconds: 5
+          periodSeconds: 2
         livenessProbe:
           tcpSocket:
             port: 8080
-          initialDelaySeconds: 15
-          periodSeconds: 10
+          initialDelaySeconds: 5
+          periodSeconds: 2
