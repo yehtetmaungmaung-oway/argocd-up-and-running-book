@@ -21,7 +21,7 @@ spec:
         tier: database
     spec:
       containers:
-      - image: registry.access.redhat.com/rhscl/mysql-80-rhel7:latest
+      - image: registry.access.redhat.com/rhscl/mysql-56-rhel7:latest
         name: mysql
         env:
         - name: MYSQL_DATABASE
