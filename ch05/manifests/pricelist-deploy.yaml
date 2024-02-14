@@ -34,3 +34,14 @@ spec:
           value: mysql
         - name: MYSQL_SERVICE_PORT
           value: "3306"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 10
