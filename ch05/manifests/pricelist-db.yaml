@@ -33,12 +33,11 @@ spec:
         volumeMounts:
         - mountPath: /var/lib/mysql/data
           name: mysql-db
-        readinessProbe:
-          tcpSocket:
-            port: 3306
+        livenessProbe:
+          command: [ "sh", "-c", "mysql", "--user=$MYSQL_USER", "--password=$MYSQL_PASSWORD", "--host=$(hostname)", "-e", "'SELECT 1;'" ]
           initialDelaySeconds: 15
           periodSeconds: 10
-        livenessProbe:
+        readinessProbe:
           tcpSocket:
             port: 3306
           initialDelaySeconds: 15
