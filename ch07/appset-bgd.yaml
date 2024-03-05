@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: bgd
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - overlay: blue
+        gitRepo: https://github.com/christianh814/gitops-examples
+        appPath: applicationsets/list-generator/v0.2/k8s/overlays
+        appBranch: main
+      - overlay: green
+        gitRepo: https://gitlab.com/christianh814/test-applicationsets.git
+        appPath: list-generator/k8s/overlays
+        appBranch: main
+  template:
+    metadata:
+      name: 'bgd-{{overlay}}'
+    spec:
+      project: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        retry:
+          limit: 5
+          backoff:
+            duration: 5s
+            maxDuration: 3m0s
+            factor: 2
+      source:
+        repoURL: '{{gitRepo}}'
+        targetRevision: '{{appBranch}}'
+        path: '{{appPath}}/{{overlay}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'bgd-{{overlay}}'
