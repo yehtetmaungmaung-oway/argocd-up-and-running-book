@@ -15,8 +15,7 @@ spec:
   - description: Developers get view and sync
     name: golist-developer
     policies:
-    - p, role:golist-developer, applications, get, golist/*, allow
-    - p, role:golist-developer, applications, sync, golist/*, allow
-    - p, role:golist-developer, projects, get, golist, allow
+    - p, proj:golist:golist-developer, applications, get, golist/*, allow
+    - p, proj:golist:golist-developer, applications, sync, golist/*, allow
     groups:
     - Developers
