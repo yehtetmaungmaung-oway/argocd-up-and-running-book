@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
 spec:
   source:
-    path: apps/golist-frontend
+    path: ch08/apps/golist-frontend
     repoURL: 'https://github.com/sabre1041/argocd-up-and-running-book'
     targetRevision: main
   destination:
