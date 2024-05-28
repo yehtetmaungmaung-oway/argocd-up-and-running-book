@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: golist-api
+  name: golist-api
+  namespace: golist
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: golist-api
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: golist-api
+    spec:
+      containers:
+        - image: quay.io/christianh814/golist-api:latest
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
+          name: golist-api
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
+          resources: {}
+          volumeMounts:
+            - mountPath: /app/appconfig
+              name: config-volume
+      volumes:
+        - configMap:
+            name: golist-api-config
+          name: config-volume

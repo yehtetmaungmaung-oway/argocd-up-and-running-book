@@ -1,0 +1,22 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  name: golist-api-ingress
+  namespace: golist
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: golist-api.7f000001.nip.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: golist-api
+                port:
+                  number: 8080
+            path: /
+            pathType: Prefix

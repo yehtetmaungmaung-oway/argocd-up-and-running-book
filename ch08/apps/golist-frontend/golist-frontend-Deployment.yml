@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: golist-frontend
+  name: golist-frontend
+  namespace: golist
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: golist-frontend
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: golist-frontend
+    spec:
+      containers:
+        - image: quay.io/christianh814/golist-frontend:latest
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
+          name: golist-frontend
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
+          resources: {}
+          volumeMounts:
+            - mountPath: /opt/app-root/src/appconfig
+              name: config-volume
+      volumes:
+        - configMap:
+            name: golist-frontend-config
+          name: config-volume

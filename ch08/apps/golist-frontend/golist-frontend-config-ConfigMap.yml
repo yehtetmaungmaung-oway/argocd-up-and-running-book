@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  config.json: '{"api": "http://golist-api.7f000001.nip.io/api/products"}'
+kind: ConfigMap
+metadata:
+  name: golist-frontend-config
+  namespace: golist
