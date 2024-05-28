@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: golist
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  sourceRepos:
+  - '*'
+  roles:
+  - description: Developers get view and sync
+    name: golist-developer
+    policies:
+    - p, role:golist-developer, applications, get, golist/*, allow
+    - p, role:golist-developer, applications, sync, golist/*, allow
+    - p, role:golist-developer, projects, get, golist, allow
+    groups:
+    - Developers
