@@ -1,0 +1,4 @@
+---
+- op: replace
+  path: "/data/applicationsetcontroller.enable.progressive.syncs"
+  value: 'true'
