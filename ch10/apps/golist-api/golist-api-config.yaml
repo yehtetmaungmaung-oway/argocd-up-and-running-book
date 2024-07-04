@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: golist-api-config
+data:
+  config.json: |
+    {"connection_string":"golist:golist@tcp(golist-db-mariadb:3306)/golist","port":8080}

@@ -1,0 +1,60 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: golist
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - srv: database
+        path: ch10/apps/golist-db/
+      - srv: backend
+        path: ch10/apps/golist-api/
+      - srv: frontend
+        path: ch10/apps/golist-frontend/
+  strategy:
+    type: RollingSync
+    rollingSync:
+      steps:
+        - matchExpressions:
+            - key: golist-component
+              operator: In
+              values:
+                - database
+        - matchExpressions:
+            - key: golist-component
+              operator: In
+              values:
+                - backend
+        - matchExpressions:
+            - key: golist-component
+              operator: In
+              values:
+                - frontend
+  template:
+    metadata:
+      name: '{{srv}}'
+      labels:
+        golist-component: '{{srv}}'
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/christianh814/app-of-apps-example'
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        name: in-cluster
+        namespace: golist
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        retry:
+          limit: 5
+          backoff:
+            duration: 5s
+            maxDuration: 3m0s
+            factor: 2
+        syncOptions:
+          - CreateNamespace=true
