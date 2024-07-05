@@ -10,6 +10,8 @@ spec:
     path: ch10/argocd/applications
     repoURL: 'https://github.com/sabre1041/argocd-up-and-running-book'
     targetRevision: main
+    directory:
+      exclude: 'parent.yaml'
   destination:
     namespace: argocd
     server: 'https://kubernetes.default.svc'
