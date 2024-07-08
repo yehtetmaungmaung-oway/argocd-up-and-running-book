@@ -1,0 +1,36 @@
+{{- if .Values.setupGitea }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "gitea.setupFullName" . }}
+  labels:
+    {{- include "gitea.labels" . | nindent 4 }}
+spec:
+  template:
+    spec:
+      containers:
+      - name: setup-gitea
+        image: {{ template "gitea.image" .Subcharts.gitea }}
+        envFrom:
+          - secretRef:
+              name: {{ include "gitea.setupFullName" . }}
+        command:
+          - /bin/bash
+          - -c
+          - |
+            #!/bin/bash
+            ls -l {{ .Values.scriptsMountPath }}/ 
+            {{ .Values.scriptsMountPath }}/{{ .Values.setupScriptFile | base }}
+        volumeMounts:
+          - name: setup-script
+            mountPath: {{ .Values.scriptsMountPath }}
+      volumes:
+        - name: setup-script
+          configMap:
+            name: {{ include "gitea.setupFullName" . }}
+            defaultMode: 0555
+      restartPolicy: Never
+  backoffLimit: 10
+
+{{- end }}

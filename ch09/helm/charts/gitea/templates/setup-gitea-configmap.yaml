@@ -1,0 +1,12 @@
+{{- if .Values.setupGitea }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "gitea.setupFullName" . }}
+  labels:
+    {{- include "gitea.labels" . | nindent 4 }}
+data:
+  {{ .Values.setupScriptFile | base }}: |-
+    {{- .Files.Get .Values.setupScriptFile | nindent 4 }}
+{{- end }}

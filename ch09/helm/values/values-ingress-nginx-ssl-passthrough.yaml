@@ -1,0 +1,7 @@
+---
+
+controller:
+  hostPort:
+    enabled: true
+  extraArgs:
+    enable-ssl-passthrough: true

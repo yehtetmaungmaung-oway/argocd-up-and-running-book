@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ch09-gpg-signatures
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: ch09-security
+    server: https://kubernetes.default.svc
+  project: ch09-gpg
+  source:
+    path: manifests
+    repoURL: https://git.upandrunning.local/upandrunning/ch09-gpg-signatures.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
