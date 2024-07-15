@@ -1,0 +1,11 @@
+---
+
+setupGitea: true
+setupScriptFile: files/setup_gitea.sh
+scriptsMountPath: /etc/scripts
+
+gitea:
+  scheme: http
+  host: gitea-http
+  port: 3000
+  admin: {}

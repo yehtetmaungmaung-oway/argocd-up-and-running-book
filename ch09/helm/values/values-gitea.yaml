@@ -1,0 +1,33 @@
+---
+
+gitea:
+  gitea:
+    admin:
+      username: "gitea_admin"
+      password: "Argocdupandrunning1234@"
+      email: "gitea@upandrunning.local"
+  service:
+    ssh:
+      type: ClusterIP
+      port: 22
+      clusterIP:
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    hosts:
+      - host: git.upandrunning.local
+        paths:
+          - path: "/"
+            pathType: Prefix
+    tls:
+      - secretName: git-server-certificate
+        hosts:
+        - git.upandrunning.local
+  postgresql-ha:
+    enabled: false
+  postgresql:
+    enabled: true
+  redis-cluster:
+    enabled: false
