@@ -1,0 +1,9 @@
+dependencies:
+- name: mattermost-operator
+  repository: https://helm.mattermost.com
+  version: 1.0.2
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 15.5.18
+digest: sha256:65c2f0ccc160680deb41fa23df50c7b338fa133256031b433b55fbf3c902d7b1
+generated: "2024-07-24T17:51:48.292373-07:00"

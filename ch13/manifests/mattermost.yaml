@@ -1,0 +1,47 @@
+---
+apiVersion: installation.mattermost.com/v1beta1
+kind: Mattermost
+metadata:
+  name: mattermost
+  namespace: mattermost-operator
+spec:
+  imagePullPolicy: IfNotPresent
+  version: 5.28.0
+  size: 100users
+  useServiceLoadBalancer: false
+  ingress:
+    enabled: true
+    host: mattermost.7f000001.nip.io
+  mattermostEnv:
+    - name: MM_FILESETTINGS_AMAZONS3SSE
+      value: "true"
+    - name: MM_FILESETTINGS_AMAZONS3SSL
+      value: "true"
+  licenseSecret: ""
+  database:
+    external:
+      secret: mm-db-credentials
+  fileStore:
+    external:
+      url: minio-service.mattermost-operator.svc.cluster.local:9000
+      bucket: mattermost
+      secret: file-store-credentials
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mm-db-credentials
+  namespace: mattermost-operator
+type: Opaque
+data:
+  DB_CONNECTION_STRING: cG9zdGdyZXM6Ly9tYXR0ZXJtb3N0Om1hdHRlcm1vc3RAbWF0dGVybW9zdC1vcGVyYXRvci1wb3N0Z3Jlc3FsLm1hdHRlcm1vc3Qtb3BlcmF0b3Iuc3ZjLmNsdXN0ZXIubG9jYWw6NTQzMi9tYXR0ZXJtb3N0P2Nvbm5lY3RfdGltZW91dD0xMCZzc2xtb2RlPWRpc2FibGU=
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: file-store-credentials
+  namespace: mattermost-operator
+type: Opaque
+data:
+  accesskey: YWRtaW4=
+  secretkey: YWRtaW5hZG1pbg==
