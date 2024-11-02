@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+  - name: kustomize-helm
+    version: 0.1.0
+    releaseName: kustomize-helm
+
+helmGlobals:
+  chartHome: charts
+
+
+patches:
+- patch: |-
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: kustomize-helm
+    data:
+      specialValue: "Added by Kustomize"

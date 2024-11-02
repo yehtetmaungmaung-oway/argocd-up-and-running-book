@@ -1,0 +1,23 @@
+apiVersion: v1
+data:
+  extension-ch11.js: |+
+    ((window) => {
+      const component = () => {
+        return React.createElement(
+          "div",
+          { style: { padding: "10px" } },
+          "Argo CD Up and Running"
+        );
+      };
+      window.extensionsAPI.registerSystemLevelExtension(
+        component,
+        "Argo CD Book",
+        "/argocd-book",
+        "fa-book"
+      );
+    })(window);
+
+kind: ConfigMap
+metadata:
+  name: ui-extensions
+  namespace: argocd

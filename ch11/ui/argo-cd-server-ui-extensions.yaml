@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argo-cd-argocd-server
+  namespace: argocd
+spec:
+  template:
+    spec:
+      containers:
+      - name: server
+        volumeMounts:
+        - mountPath: /tmp/extensions
+          name: ui-extensions
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: ui-extensions
+        name: ui-extensions

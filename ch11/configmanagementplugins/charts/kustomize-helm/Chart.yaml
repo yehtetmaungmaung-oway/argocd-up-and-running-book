@@ -1,0 +1,5 @@
+apiVersion: v2
+name: kustomize-helm
+description: A simple Helm chart to demonstrate Kustomize and Helm integraton
+version: "0.1.0"
+
