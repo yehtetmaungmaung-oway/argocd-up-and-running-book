@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: simple-go
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.upandrunning.local/upandrunning/simple-go
+    targetRevision: main
+    path: deploy/overlays/default
+  destination:
+    namespace: webhooks
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
