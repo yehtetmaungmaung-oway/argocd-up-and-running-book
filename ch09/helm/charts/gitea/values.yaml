@@ -5,6 +5,10 @@ setupScriptFile: files/setup_gitea.sh
 scriptsMountPath: /etc/scripts
 
 gitea:
+  deployment:
+    env:
+      - name: GITEA__webhook__ALLOWED_HOST_LIST
+        value: "argocd.upandrunning.local"
   scheme: http
   host: gitea-http
   port: 3000
