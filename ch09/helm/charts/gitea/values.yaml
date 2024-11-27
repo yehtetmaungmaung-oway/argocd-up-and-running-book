@@ -9,6 +9,8 @@ gitea:
     env:
       - name: GITEA__webhook__ALLOWED_HOST_LIST
         value: "argocd.upandrunning.local"
+      - name: GITEA__webhook__SKIP_TLS_VERIFY
+        value: "true"
   scheme: http
   host: gitea-http
   port: 3000
