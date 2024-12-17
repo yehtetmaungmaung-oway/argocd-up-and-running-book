@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx
+  namespace: argocd
+spec:
+  project: ch09-impersonation
+  source:
+    repoURL: https://github.com/sabre1041/argocd-up-and-running-book
+    targetRevision: main
+    path: ch09/manifests/nginx
+  destination:
+    namespace: impersonation
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

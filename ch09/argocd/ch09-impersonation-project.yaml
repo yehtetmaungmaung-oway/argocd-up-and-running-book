@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: ch09-impersonation
+  namespace: argocd
+spec:
+  description: Impersonation Example Project
+  sourceRepos:
+    - '*'
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  destinations:
+    - name: '*'
+      namespace: '*'
+      server: '*'
+  destinationServiceAccounts:
+    - server: https://kubernetes.default.svc
+      namespace: impersonation
+      defaultServiceAccount: nginx-deployer
