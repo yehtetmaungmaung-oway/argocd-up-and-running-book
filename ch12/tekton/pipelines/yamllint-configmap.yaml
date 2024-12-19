@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  yamllint.yaml: |
+    ---
+
+    extends: default
+
+    rules:
+      document-start: disable
+      indentation:
+        indent-sequences: false
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: yamllint-config

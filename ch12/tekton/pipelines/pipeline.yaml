@@ -1,0 +1,67 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: lint-sync-argocd
+spec:
+  description: | 
+    Pipeline to lint source code and synchronize Argo CD repository
+  params:
+  - name: repo-url
+    type: string
+    description: The git repo URL to clone from.
+  - name: manifests-dir
+    type: string
+    description: Directory containing manifests
+  - name: ssl-verify
+    type: string
+    description: Verify SSL certificates
+    default: false
+  - name: app-name
+    type: string
+    description: Argo CD Application name.
+  - name: argocd-flags
+    type: string
+    description: Argo CD Flags
+    default: "--"
+  - name: argocd-revision
+    type: string
+    description: Argo CD Git Revision
+    default: main
+  workspaces:
+  - name: shared-data
+    description: | 
+      This workspace contains the cloned repo files, so they can be read by the
+      next task.
+  tasks:
+  - name: fetch-source
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: shared-data
+    params:
+    - name: url
+      value: $(params.repo-url)
+    - name: sslVerify
+      value: $(params.ssl-verify)
+  - name: kustomize-lint
+    runAfter: ["fetch-source"]
+    taskRef:
+      name: kustomize-lint
+    workspaces:
+    - name: source
+      workspace: shared-data
+    params:
+    - name: manifests-dir
+      value: $(params.manifests-dir)
+  - name: sync-app
+    runAfter: ["kustomize-lint"]
+    taskRef:
+      name: argocd-task-sync-and-wait
+    params:
+    - name: application-name
+      value: $(params.app-name)
+    - name: flags
+      value: $(params.argocd-flags)
+    - name: revision
+      value: $(params.argocd-revision)

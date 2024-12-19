@@ -1,0 +1,13 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: tekton-triggers-argocd
+spec:
+  serviceAccountName: tekton-triggers-argocd-el
+  triggers:
+    - name: gitea-argocd
+      bindings:
+        - kind: TriggerBinding
+          ref: tekton-triggers-argocd
+      template:
+        ref: tekton-triggers-argocd

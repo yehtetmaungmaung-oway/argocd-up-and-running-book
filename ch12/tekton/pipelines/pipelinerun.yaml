@@ -1,0 +1,28 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: lint-sync-argocd-
+spec:
+  pipelineRef:
+    name: lint-sync-argocd
+  podTemplate:
+    securityContext:
+      fsGroup: 65532
+  workspaces:
+  - name: shared-data
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+  params:
+  - name: repo-url
+    value: https://git.upandrunning.local/upandrunning/simple-go.git
+  - name: manifests-dir
+    value: deploy/overlays/default
+  - name: app-name
+    value: simple-go
+  - name: argocd-flags
+    value: --insecure --grpc-web

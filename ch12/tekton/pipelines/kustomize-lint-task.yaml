@@ -1,0 +1,61 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: kustomize-lint
+spec:
+  params:
+    - name: shared-dir
+      type: string
+      default: /shared
+    - name: kustomize-image
+      type: string
+      default: gcr.io/k8s-staging-kustomize/kustomize:latest
+    - name: kustomize-args
+      type: string
+      default: build
+    - name: manifests-dir
+      type: string
+    - name: yamllint-image
+      type: string
+      default: docker.io/cytopia/yamllint:latest
+    - name: yamllint-configmap
+      type: string
+      default: yamllint-config
+    - name: yamllint-config-dir
+      type: string
+      default: /config
+  workspaces:
+    - name: source
+      description: Content source containing manifests.
+  steps:
+    - name: kustomize
+      image: "$(params.kustomize-image)"
+      command:
+        - /app/kustomize
+      args:
+        - '$(params.kustomize-args)'
+        - '$(workspaces.source.path)/$(params.manifests-dir)'
+        - '-o'
+        - '$(params.shared-dir)'
+      volumeMounts:
+        - name: shared
+          mountPath: '$(params.shared-dir)'
+    - name: yamllint
+      image: "$(params.yamllint-image)"
+      command:
+        - yamllint
+      args:
+        - '-c'
+        - '$(params.yamllint-config-dir)/yamllint.yaml'
+        - '$(params.shared-dir)'
+      volumeMounts:
+        - name: shared
+          mountPath: '$(params.shared-dir)'
+        - name: yamllint-config
+          mountPath: '$(params.yamllint-config-dir)'
+  volumes:
+  - name: shared
+    emptyDir: {}
+  - name: yamllint-config
+    configMap:
+      name: '$(params.yamllint-configmap)'

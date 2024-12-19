@@ -7,3 +7,5 @@ controller:
     enabled: true
   extraArgs:
     enable-ssl-passthrough: true
+  updateStrategy:
+    type: Recreate

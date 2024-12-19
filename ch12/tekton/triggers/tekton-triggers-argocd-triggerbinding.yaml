@@ -1,0 +1,8 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: tekton-triggers-argocd
+spec:
+  params:
+  - name: revision
+    value: $(body.after)
