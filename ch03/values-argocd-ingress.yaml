@@ -1,0 +1,9 @@
+---
+
+server:
+  ingress:
+    enabled: true
+    hostname: argocd.upandrunning.local
+    ingressClassName: nginx
+  extraArgs:
+  - --insecure
